@@ -28,7 +28,7 @@ Class targetClass = [NSString class];
 id mysteryObject = @"An NSString object";
 if ([mysteryObject isKindOfClass:targetClass])
 {
-	NSLog(@"Yup! That's an instance of the target class");
+    NSLog(@"Yup! That's an instance of the target class");
 }
 ``` 
 
