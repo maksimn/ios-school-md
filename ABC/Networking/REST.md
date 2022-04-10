@@ -129,7 +129,7 @@ Use path, not quегу
 
 ```
 /notes/films 
-/api?type=notes&id=films 
+/api?type=notes&id=films // wrong
 ```
 
 ---
@@ -138,19 +138,19 @@ Use plurals, not singles
 
 ```
 /notes/films
-/note/films 
+/note/films // wrong
 ```
 
 не жесткое правило, для единичного ресурса не надо 
 
 ---
 
-Use only nouns, not чегЬб 
+Use only nouns, not verbs 
 
 создание заметки 
 
 ```
-РОSТ /notes/add
+РОSТ /notes/add // wrong
 РОSТ /notes 
 ```
 
@@ -158,15 +158,16 @@ Use only nouns, not чегЬб
 
 ---
 
-Avoid чегЫаде, ое plurals 
+Avoid verbiage, use plurals 
 
 ```
-/notes
+/notes // ok
+/note_list // wrong
 ```
 
 ---
 
-Use Iowercase 
+Use lowercase 
 
 ---
 
@@ -259,8 +260,8 @@ Accept:
 Ноя: localhost  
 
 { 
-  "tit1e": "Fi1ms", 
-  "description": "хуг" 
+  "tit1e": "Films", 
+  "description": "xyz" 
 } 
 ```
 
@@ -276,7 +277,7 @@ Location: /notes/films
 _Hypertext Application_ - общее решения для связывания ресурсов в рамках взаимодействия по REST. 
 
 
-GЕТ, РUТ, ОЕЕЕТЕ - идемпотентны 
+GЕТ, РUТ, DЕLЕТЕ - идемпотентны 
 
 РОSТ, РАТСН - не идемпотентны 
 
