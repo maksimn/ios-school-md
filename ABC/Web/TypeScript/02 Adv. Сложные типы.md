@@ -1,9 +1,10 @@
-Полиморфный this-тип
+## Полиморфный this-тип
 
 Это тип, являющийся подтипом содержащего его класса или интерфейса.
 
 То есть тип, на который ссылается this, возможно, является типом производного класса.
 
+```ts
 class Vehicle {
   drive() {
     return this;
@@ -18,14 +19,15 @@ v.drive(); // returns Vehicle type
 
 var c = new Car();
 c.drive(); // returns Car type
+```
 
-==================
-﻿Слияние объявлений
+## ﻿Слияние объявлений
 
 Компилятор производит слияние двух отдельных объявлений, объявленных с одним и тем же именем, в единственное определение.
 
 Пусть есть 2 интерфейса в разных частях приложения
 
+```ts
 interface Employee {
     name: string;
     doWork(): () => void;
@@ -35,32 +37,39 @@ interface Employee {
     title: string;
     phone: string;
 }
+```
 
 Компилятор объединит их в единственный интерфейс
 
+```ts
 interface Employee {
     name: string;
     doWork(): () => void;
     title: string;
     phone: string;
 }
+```
 
 Допускаются слияния
+
 - интерфейсов
 - перечислений
 - пространств имен
 - пространств имен с классами 
+
 (если дать классу и пространству имен одно и то же имя, они будут слиты. Результат - вложенная структура, которая походит на внутренние классы из других языков программирования)
+
 - пространств имен с функциями
 (это позволяет присваивать функциям значения свойств)
+
 - пространств имен с перечислениями
 (так можно создать статические члены для перечислений)
 
------------------
-Приращение модуля
+## Приращение модуля
 
 Можно расширить существующий модуль новыми членами. Если над таким модулем работаете не вы (код 3-ей стороны).
 
+```ts
 /// classes.ts
 export class UniversityLibrarian 
     implements Interfaces.Librarian, Employee, Researcher {
@@ -76,8 +85,6 @@ name: string;
 /// LibrarianExtension.ts
 import { UniversityLibrarian } from './classes';
 
-
-
 declare module './classes' {
     
     interface UniversityLibrarian {
@@ -90,19 +97,17 @@ declare module './classes' {
 
 }
 
-
-
 UniversityLibrarian.prototype.hostSeminar = function(topic) {
     
     console.log('Hosting a seminar on ' + topic);
 
 }
+```
 
 
 Теперь для объекта UniversityLibrarian можно вызывать свойство phone и метод hostSeminar().
 
------------
-Type Guards
+## Type Guards
 
 Это способ проверить тип переменной
 + способ для компилятора сузить переменную до заданного типа.
@@ -113,33 +118,41 @@ Type Guards
 
 1) Через typeof.
 
+```ts
 let x: string | number = 123;
 if (typeof x === 'string') {
   ...
 }
+```
 
 Такой тайпгард работает только с типами string, number, boolean и symbol.
 
 2) Через instanceof.
 
+```ts
 x instanceof Phone
+```
+
 проверяет, что переменная слева имеет в цепочке прототипов конструктор Phone.
 
 3) User-defined type guards.
 
+```ts
 interface Vehicle {...}
 
 function isVehicle(v: any): v is Vehicle {
     return (<Vehicle>v).numberOfWheels !== undefined;
 }
+```
+
 - здесь задан т.н. предикат типа как возвращаемое значение функции.
 
-=======
-Symbols
+## Symbols
 
 Фича ES2015, принятая TypeScript.
 
 Новый примитивный тип данных с особым набором возможностей.
+
 * единственность
 * неизменяемость
 
