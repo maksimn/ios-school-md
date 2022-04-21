@@ -1,6 +1,42 @@
-# iOS-Dev.
+# iOS-Dev. UIKit.
 
-# UIKit
+## "Карта знаний" UIKit'a.
+
+__MVС паттерн в iOS. Его части.__
+
+__UIKit и CALayer. iOS стек для работы с GUI.__
+
+__UIView. Способы вёрстки представлений. Autoresizing mask. Constraints.__
+
+__Важные методы UIView. intrinsicContentSize. Hugging priority. Compression resistance.__
+
+__Size Classes.__
+
+__Список всех готовых UI-элементов UIKit'a.__
+
+__Appearance. UIAppearance.__
+
+__Иерархия представлений. Система координат. Bounds и frame.__ 
+
+__UIViewController. Его ответственности. Виды поведения view controller'a.__
+
+__Жизненный цикл UIViewController и его методы. Создание View Controller'a.__
+
+__Связь модели и представления, способы. "Направление данных".__
+
+__UIResponder, Responder chain. Метод hitTest().___
+
+__Touch events. UIGestureRecognizer.__
+
+__Сложные представления и списки. UIScrollView, UITableView, UICollectionView.__
+
+__Кастомный лэйаут collection view.__
+
+__UIKit, UIViewController и state restoration.__
+
+__Иерархии VC. Контейнер-контроллеры. Стандартные и кастомные.__
+
+__Навигация в iOS приложении. Презентация UIViewController'a. UITabBarController. UINavigationController.__
 
 # MVC
 
