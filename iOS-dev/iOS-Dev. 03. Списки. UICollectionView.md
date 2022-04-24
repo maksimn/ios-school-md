@@ -228,6 +228,22 @@ Download final project - ничего не надо делать =)
 Делать на свифте можно.
 
 ---
+## Customizing Collection View Layouts
+
+Настройка лэйаута для `UICollectionView`:
+
+* `MosaicLayout`,
+* `ColumnFlowLayout`
+
+https://developer.apple.com/documentation/uikit/uicollectionview/customizing_collection_view_layouts?language=objc
+
+В сложных интерфейсах `UICollectionView` позволяет делать достаточно гибкий лэйаут. Настраивается в зависимости от положения экрана в том числе. Больше возможностей из коробки, чем у таблиц.
+
+_В сберовском приложении поворачивается при повороте экрана?_
+
+Нет. Только портретный режим. Не спрашивай, почему.
+
+---
 
 ## UITableViewController и UICollectionViewController
 
