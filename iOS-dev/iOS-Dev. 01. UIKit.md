@@ -10,7 +10,7 @@ __UIKit и CALayer. iOS стек для работы с GUI.__
 
 __Список всех готовых UI-элементов UIKit'a.__
 
-__UIResponder, Responder chain. Метод hitTest().___
+__UIResponder, Responder chain. Метод hitTest().__
 
 ### 2. UIViewController.
 

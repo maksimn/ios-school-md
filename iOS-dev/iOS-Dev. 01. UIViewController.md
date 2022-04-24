@@ -130,15 +130,6 @@ __*Про Interface Builder'ы.*__ Основное состоит в том, ч
 * `AppDelegate` владеет окном `UIWindow` через свойство `self.window`
 * Окно владеет корневым контроллером через свойство `self.window.rootViewController`. Это может быть Navigation Controller, Tab Controller и т. д., который содержит другие контроллеры.
 
-
----
-
-# Жесты касания рекогнайзера
-
-UIGestureRecognizer
-
-https://medium.com/yandex-maps-ios/uigesturerecognizer-tutorial-83f2128e479d
-
 ---
 
 ### Особенности мобильных приложений
@@ -240,11 +231,8 @@ __IBOutlet__ - индикатор для свойства класса, кото
 
 ---
 
-### Фреймворки
+## Виды контроллеров. TabBar и кастомные рут контроллеры. NavigationController
 
-iOS 6: появление фреймворков для работы с Twitter и Facebook.
-
----
-
+Тоже прорабатывать не нужно, просто скачать и посмотреть пример про Navigation Bar Controller. И естественно скачать презентацию лекции.
 
 
