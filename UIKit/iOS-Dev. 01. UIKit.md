@@ -45,3 +45,48 @@ __Touch events. UIGestureRecognizer.__
 __Сложные представления и списки. UIScrollView, UITableView, UICollectionView.__
 
 __Кастомный лэйаут collection view.__
+
+---
+
+# 1. Основы UIKit.
+
+## MVС паттерн в iOS. Его части.
+
+`../../materials-from-prepods/uikit.pdf`
+
+В разработке для iOS часто применяется паттерн MVC:
+
+* _View_ - __Component__ (название в iOS-разработке) - компонент есть элемент пользовательского интерфейса (напр., кнопка)
+
+* _Model_ - __DataSource__ - предоставляет данные для приложения
+
+* _Controller_ - __Delegate__ - управляет потоком данных в приложении и тем, какое представление отобразить на экране.
+
+## UIKit и CALayer. iOS стек для работы с GUI приложения.
+
+`../../materials-from-prepods/uikit.pdf`
+
+## Список всех готовых UI-элементов UIKit'a.
+
+```
+UIView
+
+UILabel    UIButton    UITableView    UICollectionView   UISegmentedControl  UITextField
+
+UISlider    UISwitch    UIActivityIndicatorView    UIProgressView    UIPageControl  UIStepper
+
+UIStackView  UITableViewCell  UICollectionViewCell  UIImageView  UICollectionReusableView 
+
+UITextView  UIScrollView  UIDatePicker  UIPickerView  UIVisualEffectView  MKMapView  MTKView 
+
+GLKView   SCNView  SKView  ARSCNView  ARSKView  UIWebView  WKWebView  ARView  CLLocationButton
+
+UIContainerView  UINavigationBar  UINavigationItem  UIToolbar  UIBarButtonItem  UITabBar  
+
+UITabBarItem  UISearchBar  UICommand  UIMenu  
+```
+
+## UIResponder, Responder chain. Метод hitTest().
+
+`../../materials-from-prepods/uikit.pdf`
+

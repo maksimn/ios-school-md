@@ -1,6 +1,24 @@
 # iOS-Dev. UIKit.
 
-# MVC
+__UIViewController. Его ответственности. Виды поведения view controller'a.__
+
+__Жизненный цикл UIViewController и его методы. Создание View Controller'a.__
+
+__Связь модели и представления, способы. "Направление данных".__
+
+__UIKit, UIViewController и state restoration.__
+
+__Иерархии VC. Контейнер-контроллеры. Стандартные и кастомные.__
+
+__Навигация в iOS приложении. Презентация UIViewController'a. UITabBarController. UINavigationController.__
+
+__Appearance. UIAppearance.__
+
+`../../materials-from-prepods/uikit.pdf`
+
+`../../materials-from-prepods/view-controller.pdf`
+
+`../../materials-from-prepods/UIView.pdf`
 
 # Жизненный цикл ViewController'a
 
@@ -135,18 +153,6 @@ __*Про Interface Builder'ы.*__ Основное состоит в том, ч
 ### Особенности мобильных приложений
 
 Особенность мобильного приложения - оно работает, занимая весь экран для пользователя.
-
----
-
-### Паттерн MVC в разработке для iOS
-
-В разработке для iOS часто применяется паттерн MVC:
-
-* _View_ - __Component__ (название в iOS-разработке) - компонент есть элемент пользовательского интерфейса (напр., кнопка)
-
-* _Model_ - __DataSource__ - предоставляет данные для приложения
-
-* _Controller_ - __Delegate__ - управляет потоком данных в приложении и тем, какое представление отобразить на экране.
 
 --- 
 

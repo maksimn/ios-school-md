@@ -1,5 +1,19 @@
 # UIKit. UIView.
 
+__UIView. Иерархия представлений. Система координат. Bounds и frame.__ 
+
+__Способы вёрстки представлений. Autolayout. Autoresizing mask. Constraints.__
+
+__Важные методы UIView. intrinsicContentSize. Hugging priority. Compression resistance.__
+
+__Size Classes.__
+
+__Touch events. UIGestureRecognizer.__
+
+`../../materials-from-prepods/uikit.pdf`
+
+`../../materials-from-prepods/UIView.pdf`
+
 ## Autolayout 
 
 Autolayout - это способ адаптации графического интерфейса под разные размеры экрана / разную ориентацию экрана устройства.
