@@ -85,4 +85,4 @@ __Рассмотренная задача__: запускаем некоторы
 
 ---
 
-Лекция в ШМР Яндекса по concurrency: https://yandex.zoom.us/rec/play/NSQ1eDPBbx1hV8yFPaedIyVEvY7Hjt-ncRhXZ3vPy-dMnyN-aosHWD97F6yOgT6XoAd7RLX-_grEYWfS.39Hv56hD97-Tdz6w?continueMode=true&_x_zm_rtaid=Z4zlhUb_TU6v_U0OAMIhVg.1624765090644.cf186d0a610763d66f6e67df554ff695&_x_zm_rhtaid=632
+

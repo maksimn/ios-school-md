@@ -78,3 +78,17 @@ dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
 
 В конкурентной очереди может создавать несколько потоков, по которым будут распределяться задачи. Здесь возможно возникновение race conditions.
 
+## Барьерные операции
+
+Барьерные операции ставят барьер между операциями, поступившими "до" и "после". Таким образом, операции записи/изменения данных производятся последовательно (в отличие от операций чтения).
+
+```swift
+itemsQueue.async(flags: [.barrier]) { [weak self] in
+  guard let self = self else { return }
+  self._items = items.reduce(into: [:]) { res, item in
+    res[item.id] = item
+  }
+  completion()
+}
+```
+
