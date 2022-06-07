@@ -101,10 +101,10 @@ class _MyHomePageState extends State<MyHomePage> {
 Полезные свойства:
 
 * `itemBuilder` - задает функцию, которая принимает контекст и индекс, и возвращает элемент (`ListTile`).
-* `itemCount` - необязательный. Главное – чтобы было всё хорошо с обращением к элементу массива по индексу.
-* `scrollDirection`
-* `reverse`: `false | true`
-* `addAutomaticKeepAlives`
+* `itemCount` - необязательный (для `ListView.builder`). Главное – чтобы было всё хорошо с обращением к элементу массива по индексу.
+* `scrollDirection` - вертикаль, горизонталь.
+* `reverse`: `false | true` - порядок показа элементов.
+* `addAutomaticKeepAlives` - чтобы список сохранялся при переключении между табами.
 
 ```dart
 class _MyHomePageState extends State<MyHomePage> {
@@ -170,12 +170,12 @@ class _MyHomePageState extends State<MyHomePage> {
       body: ListView.builder(
         itemBuilder: (context, index) {
           return ListTile(
-            title: Text(_items[index]),
+            title: Text(_items[index]), // здесь используется index
             subtitle: index % 2 == 0 ? Text('subtitle') : null,
             leading: Icon(Icons.radio_button_on),
             onTap: () => showDialog(
               context: context,
-              builder: (_) => AlertDialog(
+              builder: (_) => AlertDialog( // более сложный алерт-диалог.
                 title: Text('Do you really want to remove this item?'),
                 content: Text(_items[index]),
                 actions: [
@@ -197,9 +197,83 @@ class _MyHomePageState extends State<MyHomePage> {
         },
         itemCount: _items.length,
       ),
-      floatingActionButton: FloatingActionButton(/* ... */),
+      floatingActionButton: FloatingActionButton(
+        onPressed: () => _addItem('Item ${_items.length}'),
+        tooltip: 'Increment',
+        child: Icon(Icons.add),
+      ),
     );
   }
 }
 ```
 
+### 3. ListView.separated
+
+То же, что и .builder, но добавляются разделители. У него есть `itemBuilder`, но дополнительно есть
+
+`separatorBuilder` (похож на `itemBuilder`), в нём возвращается виджет, вокруг него также можно крутить логику.
+
+Становится обязательным:
+
+`itemCount`
+
+```dart
+class _MyHomePageState extends State<MyHomePage> {
+  List<String> _items = <String>[];
+
+  void _addItem(String item) {
+    setState(() {
+      _items.add(item);
+    });
+  }
+
+  void _removeItem(String item) {
+    setState(() {
+      _items.remove(item);
+    });
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: Text(widget.title),
+      ),
+      body: ListView.separated(
+        itemBuilder: (context, index) => ListTile(/*
+          ...
+        */),
+        itemCount: _items.length,
+        separatorBuilder: (context, index) => Divider(
+          indent: 8, // отступ разделитя от начала
+          color: Colors.grey,
+        ),
+      ),
+      floatingActionButton: FloatingActionButton(/* ... */),
+    );
+  }
+}
+
+```
+
+### 4. ListView.custom
+
+Свой кастомный список. На практике встречается редко.
+
+`SliverChildListDelegate` – статический
+
+`SliverChildBuilderDelegate` – с builder’ом
+
+Удобен, если хотим builder вынести в свой класс.
+
+### Поля ListView:
+
+`ScrollPhysics` - то как список будет себя вести при скролле
+
+* BouncingScrollPhysics
+* ClampingScrollPhysics
+
+* AlwaysScrollableScrollPhysics
+* NeverScrollableScrollPhysics
+
+и другие
