@@ -380,7 +380,7 @@ class _MyHomePageState extends State<MyHomePage> {
 }
 ```
 
-Здесь при добавлении элемент анимированно появляется и удалении анимированно улетает влево.
+Здесь при добавлении элемент анимированно появляется и при удалении анимированно улетает влево.
 
 ---
 
@@ -415,7 +415,8 @@ class _MyHomePageState extends State<MyHomePage> {
       appBar: AppBar(
         title: Text(widget.title),
       ),
-      body: NotificationListener<ScrollNotification>(
+      body: NotificationListener<ScrollNotification>( // в дженерике задайте другой тип, если нужно, 
+                                                      // напр., обработать начало или конец движения.
         child: ListView.builder(
           itemBuilder: (context, index) {
             return ListTile(
@@ -465,13 +466,306 @@ class _MyHomePageState extends State<MyHomePage> {
 
 `ScrollController`
 
-Допустим, нужно следить за положением оффсета и по текущему значению крутить какую-то кастомную логику, напр. менять размеры элементов, альфу элементов.
+Это второй подход к той же задаче - отслеживание скролла. Даёт дополнительные возможности.
 
+Допустим, нужно следить за положением оффсета и по текущему значению крутить какую-то кастомную логику, напр. менять размеры элементов, альфу элементов.
 
 1. Создаём его
 2. Добавляем listener
 3. Передаём его в ListView
-4. Вызвать dispose
+4. Вызвать dispose для освобождения контроллера.
 
 Текущее значение offset можно получить из соответствующего поля контроллера.
+
+```dart
+class _MyHomePageState extends State<MyHomePage> {
+  List<String> _items = <String>[];
+  ScrollController? _controller;
+  void _addItem(String item) {
+    setState(() {
+      _items.add(item);
+    });
+  }
+
+  void _removeItem(String item) {
+    setState(() {
+      _items.remove(item);
+    });
+  }
+
+  @override
+  void initState() {
+    _controller = ScrollController();
+    _controller?.addListener(() {
+      print('[listener] position: ${_controller?.position}');
+    });
+    super.initState();
+  }
+
+  @override
+  void dispose() {
+    _controller?.dispose();
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: Text(widget.title),
+      ),
+      body: ListView.builder(
+        controller: _controller,
+        itemBuilder: (context, index) {
+          return ListTile(
+            title: Text(_items[index]),
+            subtitle: index % 2 == 0 ? Text('subtitle') : null,
+            leading: Icon(Icons.radio_button_on),
+            onTap: () => showDialog(
+              context: context,
+              builder: (_) => AlertDialog(
+                title: Text('Do you really want to remove this item?'),
+                content: Text(_items[index]),
+                actions: [
+                  TextButton(
+                    child: Text('OK'),
+                    onPressed: () {
+                      _removeItem(_items[index]);
+                      Navigator.of(context).pop();
+                    },
+                  ),
+                  TextButton(
+                    child: Text('Cancel'),
+                    onPressed: () => Navigator.of(context).pop(),
+                  )
+                ],
+              ),
+            ),
+          );
+        },
+        itemCount: _items.length,
+      ),
+      floatingActionButton: FloatingActionButton(
+        onPressed: () => _addItem('Item ${_items.length}'),
+        tooltip: 'Increment',
+        child: Icon(Icons.add),
+      ),
+    );
+  }
+}
+```
+
+### Column и SingleChildScrollView
+
+Это тоже способ создания списков.
+
+Для небольшого количества элементов, так как:
+
+* создаются все элементы (не только видимые),
+* все элементы занимают память.
+
+
+Может быть более гибким, чем статический ListView
+
+```dart
+SingleChildScrollView( 
+  child: Column(
+    children: <Widget>[]
+  )
+)
+```
+
+```dart
+class _MyHomePageState extends State<MyHomePage> {
+  int _counter = 0;
+  void _incrementCounter() {
+    setState(() {
+      _counter++;
+    });
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: Text(widget.title),
+      ),
+      body: SingleChildScrollView(
+        child: Column(
+          children: <Widget>[
+            ListTile(
+              title: Text('Item 1'),
+              subtitle: Text('subtitle'),
+              leading: Icon(Icons.radio_button_on),
+              onTap: () => showDialog(
+                context: context,
+                builder: (_) => AlertDialog(
+                  title: Text('Title'),
+                  actions: [
+                    TextButton(
+                      child: Text('OK'),
+                      onPressed: () => Navigator.of(context).pop(),
+                    )
+                  ],
+                ),
+              ),
+            ),
+            ListTile(
+              title: Text('Item 2'),
+              subtitle: Text('subtitle'),
+            ),
+            ListTile(
+              title: Text('Item 3'),
+              subtitle: Text('subtitle'),
+              trailing: Icon(Icons.arrow_forward),
+            ),
+            ListTile(
+              title: Text('Item 4'),
+              leading: Icon(Icons.print),
+            ),
+            ListTile(
+              title: Text('Item 5'),
+              subtitle: Text('subtitle'),
+            ),
+            ListTile(
+              title: Text('Item 6'),
+              subtitle: Text('subtitle'),
+            ),
+            ListTile(
+              title: Text('Item 6'),
+              subtitle: Text('subtitle'),
+            ),
+            ListTile(
+              title: Text('Item 6'),
+              subtitle: Text('subtitle'),
+            ),
+            ListTile(
+              title: Text('Item 6'),
+              subtitle: Text('subtitle'),
+            ),
+            ListTile(
+              title: Text('Item 6'),
+              subtitle: Text('subtitle'),
+            ),
+            ListTile(
+              title: Text('Item 6'),
+              subtitle: Text('subtitle'),
+            ),
+            ListTile(
+              title: Text('Item 6'),
+              subtitle: Text('subtitle'),
+            ),
+            ListTile(
+              title: Text('Item 6'),
+              subtitle: Text('subtitle'),
+            ),
+            ListTile(
+              title: Text('Item 6'),
+              subtitle: Text('subtitle'),
+            ),
+            ListTile(
+              title: Text('Item 6'),
+              subtitle: Text('subtitle'),
+            ),
+          ],
+        ),
+      ),
+      floatingActionButton: FloatingActionButton(
+        onPressed: _incrementCounter,
+        tooltip: 'Increment',
+        child: Icon(Icons.add),
+      ),
+    );
+  }
+}
+```
+
+### GridView
+
+Сетка из элементов.
+
+Его несколько вариантов:
+
+1) `GridView.count` (тот, у кого есть обязательный параметр `crossAxisCount`) 
+2) `GridView.extent` (`maxCrossAxisExtent`) 
+Если задать свойство crossAxisCount = 1, то по виду как ListView 
+`GridView.builder`
+
+`CustomScrollView` и `SliverGrid`
+
+`addAutomaticKeepAlives`
+
+```dart
+class _MyHomePageState extends State<MyHomePage> {
+  int _counter = 0;
+  void _incrementCounter() {
+    setState(() {
+      _counter++;
+    });
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: Text(widget.title),
+      ),
+      body: GridView.count(
+        padding: EdgeInsets.all(8),
+        crossAxisSpacing: 10,
+        mainAxisSpacing: 10,
+        crossAxisCount: 2,
+        children: <Widget>[
+          Container(
+            child: Text('Item 1'),
+            padding: EdgeInsets.all(8),
+            color: Colors.red[50],
+          ),
+          Container(
+            child: Text('Item 2'),
+            padding: EdgeInsets.all(8),
+            color: Colors.red[100],
+          ),
+          Container(
+            child: Text('Item 3'),
+            padding: EdgeInsets.all(8),
+            color: Colors.red[200],
+          ),
+          Container(
+            child: Text('Item 4'),
+            padding: EdgeInsets.all(8),
+            color: Colors.red[300],
+          ),
+          Container(
+            child: Text('Item 5'),
+            padding: EdgeInsets.all(8),
+            color: Colors.red[400],
+          ),
+          Container(
+            child: Text('Item 6'),
+            padding: EdgeInsets.all(8),
+            color: Colors.red[500],
+          ),
+          Container(
+            child: Text('Item 7'),
+            padding: EdgeInsets.all(8),
+            color: Colors.red[600],
+          ),
+        ],
+      ),
+      floatingActionButton: FloatingActionButton(
+        onPressed: _incrementCounter,
+        tooltip: 'Increment',
+        child: Icon(Icons.add),
+      ),
+    );
+  }
+}
+```
+
+Результат:
+
+![img alt](images/flutter-gridview.png "")
+
+
 
