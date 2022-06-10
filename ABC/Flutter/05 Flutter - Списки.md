@@ -767,5 +767,114 @@ class _MyHomePageState extends State<MyHomePage> {
 
 ![img alt](images/flutter-gridview.png "")
 
+Вариант с extent:
+
+```dart
+      body: GridView.extent(
+         padding: EdgeInsets.all(8),
+         crossAxisSpacing: 10,
+         mainAxisSpacing: 10,
+         crossAxisCount: 2,
+         maxCrossAxisExtent: 100, // макс размер элемента по crossAxis. (здесь по горизонтали)
+         // ...
+```
+
+Динамический GridView:
+
+```dart
+     body: GridView.builder(
+           gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+             crossAxisCount: 3, // отвечает за сайзинг элементов, типа gridView crossAxisCount.
+           ),
+           itemCount: 300,
+           itemBuilder: (BuildContext context, int index) { // практически как в ListView
+             return Card(
+               color: Colors.red,
+               child: Center(child: Text('$index')),
+             );
+           }),
+           // ...
+```
+
+Вместо `SliverGridDelegateWithFixedCrossAxisCount` есть вариант с максимальным размером по `crossAxisExtent`.
+
+# CustomScrollView
+
+Использует Sliver – скроллируемая область (scrollable area)
+
+```slivers: List<Widget>``` - поле с массивом скроллируемых элементов.
+
+Позволяет:
+
+Соединять разные “сливеры” (в т.ч. `SliverAppBar`).
+
+```dart
+class _MyHomePageState extends State<MyHomePage> {
+  int _counter = 0;
+  void _incrementCounter() {
+    setState(() {
+      _counter++;
+    });
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      body: CustomScrollView(
+        slivers: <Widget>[
+          const SliverAppBar( // Элемент сверху, которой растягивается и уменьшается при скролле.
+            pinned: true,
+            expandedHeight: 250.0,
+            flexibleSpace: FlexibleSpaceBar(
+              title: Text('Demo'),
+            ),
+          ),
+          SliverGrid( // чуть другой GridView
+            gridDelegate: const SliverGridDelegateWithMaxCrossAxisExtent(
+              maxCrossAxisExtent: 200.0,
+              mainAxisSpacing: 10.0,
+              crossAxisSpacing: 10.0,
+              childAspectRatio: 4.0,
+            ),
+            delegate: SliverChildBuilderDelegate(
+              (BuildContext context, int index) {
+                return Container(
+                  alignment: Alignment.center,
+                  color: Colors.teal[100 * (index % 9)],
+                  child: Text('Grid Item $index'),
+                );
+              },
+              childCount: 20,
+            ),
+          ),
+          SliverFixedExtentList(
+            itemExtent: 50.0,
+            delegate: SliverChildBuilderDelegate(
+              (BuildContext context, int index) {
+                return Container(
+                  alignment: Alignment.center,
+                  color: Colors.lightBlue[100 * (index % 9)],
+                  child: Text('List Item $index'),
+                );
+              },
+            ),
+          ),
+        ],
+      ),
+      floatingActionButton: FloatingActionButton(
+        onPressed: _incrementCounter,
+        tooltip: 'Increment',
+        child: Icon(Icons.add),
+      ),
+    );
+  }
+}
+```
+
+Результат:
+
+![img alt](images/flutter-lists-2.png "")
+
+Это практически максимально гибкий вариант для списков-сеток.
 
 
