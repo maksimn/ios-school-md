@@ -83,7 +83,7 @@ View в SwiftUI - lightweight.
 
 Но вью определяет не только свой ui, но и _зависимости_.
 
-Пользователь может совершать действия, напр. тапать или переключать представление из одно вида в другой.
+Пользователь может совершать действия, напр. тапать и переключать представление из одно вида в другой:
 
 ```swift
 struct SandwichDetail: View {
@@ -92,10 +92,49 @@ struct SandwichDetail: View {
   @State private var zoomed = false
 
   var body: some View {
-
+    Image(...)
+      ...
+      .aspectRatio(contentMode: zoomed ? .fill : .fit)
+      .onTapGesture { zoomed.toggle() }
   }
 }
 ```
 
 Для этого нужно завести state-переменную. Тогда будет выделен pesistent storage для хранения этой переменной от имени данного вью.
+
+Одна из особенностей стейт-переменных состоит в том, что SwiftUI может наблюдать за тем, что они записываются и считываются. Раз оно считывается внутри `body`, то SwiftUI знает, что отображение вью зависит от него. Поэтому когда оно изменяется, `body` вызывается еще раз с новым значением состояния. И UI обновляется.
+
+Traditional UI frameworks don't distinguish between __state variables__ and _plain old properties_. In SwiftUI, every possible state your UI might find itself in
+
+* the offset of a scroll view, 
+* the highlightness of a button, 
+* the contents of a navigation stack -- 
+
+is derived from an authoritative piece of data often called __"a source of truth."__ Collectively, __your state variables__ and __your model__ constitute __the source of truth__ for your entire __app__.
+
+You can neatly classify every property as either 
+
+* __a source of truth__
+* or _a derived value_. 
+
+The `zoomed` state variable is a source of truth. The `contentMode` property is derived from it.
+
+Every state variable is a read-write source of truth. 
+
+Every plain old property is a read-only derived value. 
+
+```
+Схема разных видов примитивов data flow:
+
+             Source of Truth    Derived Value
+           |                  |
+Read-only  | Constant         | Property
+           |                  |
+Read-write | @State           | @Binding
+           | ObservableObject |
+```
+
+SwiftUI invents a tool called `@Binding` for passing read-write derived values (примера не будет). And technically, any constant can serve as a perfectly good read-only source of truth. The test data driving our previews is an example of this.
+
+Для того, чтобы SwiftUI отражал изменение данных модели, можно использовать объекты observable.
 
