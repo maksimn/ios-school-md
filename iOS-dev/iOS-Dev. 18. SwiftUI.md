@@ -138,3 +138,52 @@ SwiftUI invents a tool called `@Binding` for passing read-write derived values (
 
 Для того, чтобы SwiftUI отражал изменение данных модели, можно использовать объекты observable.
 
+---
+
+В SwiftUI имеют `body` такие абстракции как
+
+* App
+* View
+* Scene
+
+---
+
+Добавление анимации перехода между двумя режимами просмотра: 
+
+```swift
+  // ...
+  .onTapGesture {
+    withAnimation {
+      zoomed.toggle()
+    }
+  }
+  // ...
+```
+
+---
+
+В SwiftUI вьюхи вычисляют свой размер для того, чтобы размер соответствовал размеру их контента.
+
+---
+
+В SwiftUI в качестве превью можно сделать набор из нескольких экранов симуляторов для случаев разных данных.
+
+---
+
+Модификатор анимации перехода:
+
+```swift
+HStack {
+    // ...
+}
+.transition(.move(edge: .bottom))
+```
+
+---
+
+SwiftUI __data-driven__, не _event-driven_.
+
+---
+
+SwiftUI - multiplatform, позволяет работать не только с iPhone, но iPad.
+
