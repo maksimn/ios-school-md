@@ -185,5 +185,53 @@ SwiftUI __data-driven__, не _event-driven_.
 
 ---
 
-SwiftUI - multiplatform, позволяет работать не только с iPhone, но iPad.
+SwiftUI - multiplatform, позволяет работать не только с iPhone, но iPad и macOS. Код представлений един для всех платформ, специфичность делается легко.
+
+--- 
+
+Как сделать модель данных, в которых данные будет изменяемы, а не статичны?
+
+```swift
+// Это изменяемый объект, который содержит список сэндвичей.
+// Протокол ObservableObject нужен для маркировки класса, изменениях данных которого 
+// будут наблюдаемы другими объектами в SwiftUI.
+class SandwichStore: ObservableObject {
+
+  // Атрибут свойства показывает, за изменениями каких данных будут наблюдать другие объекты
+  @Published 
+  var sandwiches: [Sandwich]
+
+  init(sandwiches: [Sandwich] = []) {
+    self.sandwiches = sandwiches
+  }
+}
+
+struct SandwichesApp: App {
+  
+  // Помечает "источник правды" для изменяемого объекта (о. с изменяемыми данными)
+  // Он автоматически будет наблюдать за изменениями объекта, чтобы обновить UI, 
+  // когда данные изменятся.
+  @StateObject
+  private var store = SandwichStore()
+
+  var body: some Scene {
+    WindowGroup {
+      ContentView(store: store)
+    }
+  }
+}
+
+struct ContentView: View {
+  
+  // Сообщает SwiftUI, что изменения данного объекта должны отслеживаться, чтобы UI обновлялся.
+  @ObservedObject
+  var store: SandwichStore
+
+  var body: some View {
+    NavigationView {
+      // ...
+    }
+  }
+}
+```
 
