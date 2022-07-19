@@ -4,7 +4,7 @@
 
 Combine состоит из
 
-* Publishers (Custom, Future, Just, Deferred, Empty, Fail, Record). Это "источники" событий. Каждый тип - разный вид источника.
+* Publishers. Это "источники" событий. Каждый тип - разный вид источника.
 
 * Subscribers. Это подписчики для обработки событий.
 
@@ -16,4 +16,15 @@ Combine состоит из
 
 * Cancellable - для того, чтобы собирать вещи, которые вам не нужны.
 
+---
+
+## Виды Publisher'ов
+
+* `Custom` 
+* `Future`
+* `Just`
+* `Deferred`
+* `Empty` 
+* `Fail`
+* `Record`
 
