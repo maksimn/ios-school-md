@@ -103,9 +103,6 @@ Assign is a class and it's initialized with an instance of a class, an instance 
 
 What it does is when it receives input, it writes it out to that property on that object. Because in Swift there's no way to handle an error when you're just writing a property value, we set the failure type of Assign to Never. 
 
-__Операторы__. 
-
-
 Посмотрим на общую схему того, как это всё работает. В чём шаблон?
 
 ```
@@ -139,7 +136,54 @@ __Операторы__.
 
 В общем: one subscription, zero or more values and a single Completion.
 
-__*Пример*__:
+__Операторы__. 
+
+__*Пример*__ использования Publisher'a и Subscriber'a:
+
+```swift
+// Model:
+class Wizard {
+    var grade: Int
+}
+let merlin = Wizard(grade: 5)
+
+// Прослушиваются оповещения о присваивании оценок волшебнику, и обновляется его оценка
+let graduationPublisher = 
+    NotificationCenter.Publisher(center: .default, name: .graduated, object: merlin)
+
+let gradeSubscriber = Subscribers.Assign(object: merlin, keyPath: \.grade)
+
+// Это не скомпилится, т.к. не совпадают типы Publisher'a и Subscriber'a.
+// Тип Notification не соответствует типу Int.
+// Здесь появляется необходимость применить оператор.
+// Для того, чтобы сконвертировать Notification в Int.
+graduationPublisher.subscribe(gradeSubscriber)
+```
+
+Операторы являются Publisher'aми, покуда они удовлетворяют этому протоколу.
+
+Они _декларативны_ и поэтому являются value-типами.
+
+Операторы описывают поведение для изменения значений (сложения, удаления и т.д.).
+
+Оператор подписывается к Publisher'y ("upstream").
+
+Оператор отправляет результат Subscriber'y ("downstream").
+
+__*Пример оператора*__: Map
+
+```swift
+extension Publishers {
+  struct Map<Upstream: Publisher, Output>: Publisher {
+    // Map не создает своих Failure, поэтому просто отражает Upstream.Failure
+    typealias Failure = Upstream.Failure
+
+    let upstream: Upstream // структура инициализируется upstream'ом
+    let transform: (Upstream.Output) -> Output // то, как конвертится
+      // output upstream'a в собственный output.
+  }
+}
+```
 
 ---
 
