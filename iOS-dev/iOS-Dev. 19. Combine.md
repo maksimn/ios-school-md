@@ -185,6 +185,54 @@ extension Publishers {
 }
 ```
 
+Тогда показанный ещё выше пример приобретает следующий вид:
+
+```swift
+let graduationPublisher = 
+    NotificationCenter.Publisher(center: .default, name: .graduated, object: merlin)
+
+let gradeSubscriber = Subscribers.Assign(object: merlin, keyPath: \.grade)
+
+let converter = Publishers.Map(upstream: graduationPublisher) { note in
+    return note.userInfo?["NewGrade"] as? Int ?? 0
+}
+
+converter.subscribe(gradeSubscriber)
+```
+
+Это теперь работает, но синтаксис многословный. Есть более удобный синтаксис:
+
+```swift
+extension Publisher {
+    func map<T>(_ transform: @escaping (Self.Output) -> T) -> Publishers.Map<Self, T> {
+        return Publishers.Map(upstream: self, transform: transform)
+    }
+}
+```
+
+Для каждого оператора есть функция-расширение протокола Publisher. Особенность в том, что в качестве upstream просто используется `self`. __И это полностью меняет подход к асинхронному программированию в вашем приложении__.
+
+С новым синтаксисом:
+
+```swift
+let cancellable = 
+    NotificationCenter.default.publisher(for: .graduted, object: merlin)
+        .map { note in
+            return note.userInfo?["NewGrade"] as? Int ?? 0
+        }
+        .assign(to: \.grade, on: merlin)
+```
+
+Видим, что отмена автоматически встроена в Combine. Она позволяет разорвать цепочку Publisher-Subscriber на раннем этапе, если нужно.
+
+Этот пример выражает самую суть того, как нужно использовать Combine - в виде цепочки инструкций:
+
+Источник значений -> цепочка трансформирующих операторов --> подписчик.
+
+Операторов много. Они образуют т.н. 
+
+## Declarative Operator API. 
+
 ---
 
 Еще Combine состоит из
