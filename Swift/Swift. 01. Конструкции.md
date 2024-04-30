@@ -19,7 +19,7 @@ let str = someTuple.1
 
 ---
 
-Ranges
+## Ranges
 
 ```swift
 for i in 1..<10 {
@@ -29,6 +29,13 @@ for i in 1..<10 {
 for i in 0...10 {
 
 }
+```
+
+__*One-sided ranges*__ (односторонние диапазоны):
+
+```swift
+let range = str.startIndex...
+let range = ..<str.endIndex
 ```
 
 ---
