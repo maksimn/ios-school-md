@@ -31,20 +31,94 @@ for (index, element) in arr1.enumerated() {
 
 ---
 
-## Функции стандартной библиотеки
+## Протокол Sequence
 
-`map`
+`Sequence` предоставляет последовательный доступ к элементам коллекции с использованием итератора. Например, конструкция цикла `for in` языка Swift работает для `Sequence`.
+
+https://developer.apple.com/documentation/swift/sequence
+
+## Метод map()
+
+Реализация (почти настоящая):
 
 ```swift
-let arr = [1, 2, 3]
-let res = arr.map { $0 + 1 }
+extension Sequence {
+
+    public func map<T>(_ transform: (Element) throws -> T) rethrows -> [T] {
+        var result = [T]()
+
+        for item in self {
+            result.append(try transform(item))
+        }
+
+        return result
+    }
+}
 ```
+
+Особенности - 1) map работает с throwable функциями преобразования.
+
+2) Ключевое слово `rethrows` означает: "if the function that gets passed in throws, then map2() throws, but if the function that gets passed in doesn't throw then map2() doesn't throw either.
 
 map можно использовать не только для коллекций, но и для optionals.
 
-flatMap - из вложенных массивов делает плоский.
+## Метод flatMap()
 
-compactMap - очищает массив от nil-значений.
+`flatMap()` - из вложенных массивов делает плоский (в частном случае массивов, а в общем случае он работает для Sequence).
+
+```
+func flatMap<SegmentOfResult>(
+  _ transform: (Self.Element) throws -> SegmentOfResult
+) rethrows -> [SegmentOfResult.Element] where SegmentOfResult : Sequence
+```
+
+Реализация:
+
+```swift
+extension Sequence {
+
+    public func flatMap<SegmentOfResult>(
+        _ transform: (Element) throws -> SegmentOfResult
+    ) rethrows -> [SegmentOfResult.Element] where SegmentOfResult : Sequence {
+        var result: [SegmentOfResult.Element] = []
+
+        for item in self {
+            let subItems = try transform(item)
+
+            for subItem in subItems {
+                result.append(subItem)
+            }
+        }
+
+        return result
+    }
+}
+```
+
+## Метод compactMap()
+
+`compactMap` - очищает массив от nil-значений. 
+
+```swift
+extension Sequence {
+
+    public func compactMap<ElementOfResult>(
+        _ transform: (Self.Element) throws -> ElementOfResult?
+    ) rethrows -> [ElementOfResult] {
+        var result: [ElementOfResult] = []
+
+        for item in self {
+            if let mappedItem = try transform(item) {
+                result.append(mappedItem)
+            }
+        }
+
+        return result
+    }
+}
+```
+
+---
 
 reduce - для агрегации
 
@@ -52,15 +126,35 @@ reduce - для агрегации
 let arr = [1, 2, 3]
 
 let sum = arr.reduce(into: 0) { res, item in
-	res += item
+    res += item
 }
 ```
 
+---
+
 filter для фильтрации коллекций.
+
+---
+
+`Array`
+
+```
+func index(of element: Self.Element) -> Self.Index?
+```
+
+`Index` - A type that represents a position in the collection.
 
 index(of: 3)
 
+---
+
 first условие
+
+```
+func firstIndex(where predicate: (Self.Element) throws -> Bool) rethrows -> Self.Index?
+```
+
+---
 
 forEach
 
