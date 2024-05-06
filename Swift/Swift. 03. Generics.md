@@ -86,3 +86,66 @@ This error is caused by attempting to use a protocol, with an associated type, a
 
 Type erasure - это паттерн в Swift.
 
+---
+
+__Opaque типы__: https://docs.swift.org/swift-book/documentation/the-swift-programming-language/opaquetypes/
+
+Это тип, позволяющий использовать возможности объекта без знания его конкретного типа.
+
+От протоколов отличаются тем, что
+
+* могут работать с associated type
+* требуют, чтобы при этом использовался один и тот же тип (например, в функции, возвращающей `some SomeType` всегда возвращается объект одного и того же конкретного типа).
+
+__Extending static member lookup in generic contexts__: https://www.hackingwithswift.com/articles/233/whats-new-in-swift-5-5
+
+__Ключевое слово any для сущностных типов__ (_Introduce existential any_): https://www.hackingwithswift.com/articles/247/whats-new-in-swift-5-6
+
+_Сущностный тип_ – новый тип данных, который позволяет хранить значение любого типа, согласного с заданным протоколом.
+
+__Выведение типа из выражений по умолчанию__ (_Type inference from default expressions_): https://www.hackingwithswift.com/articles/249/whats-new-in-swift-5-7
+
+Небольшая нишевая фича. Теперь для обобщенного типа или функции можно задать значение конкретного типа по умолчанию.
+
+__Opaque объявления параметров__ (_opaque parameter declarations_): https://www.hackingwithswift.com/articles/249/whats-new-in-swift-5-7
+
+Можно использовать `some` в объявления параметров:
+
+```swift
+func doSomething(array: [some Comparable]) {
+    // ...
+}
+```
+
+__Результаты в виде структурных opaque-типов__ (_Structural opaque result types_)
+
+Теперь можно сделать возвращаемое значение с opaque-типом в виде 
+
+* кортежа, 
+* массива,
+* замыкания, которое само возвращает opaque-тип.
+
+__Разрешение сущностного использования для всех протоколов__ (_Unlock existentials for all protocols_): https://www.hackingwithswift.com/articles/249/whats-new-in-swift-5-7
+
+Существенно смягчено использование протоколов как типов когда они имеют требования для Self или associated type. То есть становится допустимым код
+
+```swift
+let someName: any Equatable = "John"
+let otherName: any Equatable = "Jane"
+```
+
+__Легковесные требования того-же-типа для первичных associated-типов__ (_Lightweight same-type requirements for primary associated types_): https://www.hackingwithswift.com/articles/249/whats-new-in-swift-5-7
+
+__Ограничения для сущностных типов__ (_Constrained existential types_): https://www.hackingwithswift.com/articles/249/whats-new-in-swift-5-7
+
+Теперь можно писать кода вроде ```any Sequence<Int>```.
+
+__buildPartialBlock for result builders__: https://www.hackingwithswift.com/articles/249/whats-new-in-swift-5-7
+
+__Неявно раскрываемые сущностные типы__ (_Implicitly opened existentials_): https://www.hackingwithswift.com/articles/249/whats-new-in-swift-5-7
+
+__Пакеты значений и параметров типа__ (_Value and type parameter packs_): https://www.hackingwithswift.com/articles/258/whats-new-in-swift-5-9
+
+Решают проблему большого количества параметров типа (раньше было ограничение на 10).
+
+
