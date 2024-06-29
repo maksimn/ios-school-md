@@ -37,6 +37,10 @@ for (index, element) in arr1.enumerated() {
 
 https://developer.apple.com/documentation/swift/sequence
 
+## Протокол Collection
+
+Это протокол, означающий что коллекцию можно обойти неограниченное количество раз без её мутаций и получить доступ к её элементам через `Index` и `subscript()`.
+
 ## Метод map()
 
 Реализация (почти настоящая):
