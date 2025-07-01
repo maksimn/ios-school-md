@@ -78,6 +78,53 @@ dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
 
 В конкурентной очереди может создавать несколько потоков, по которым будут распределяться задачи. Здесь возможно возникновение race conditions.
 
+---
+
+Как можно синхронизировать доступ к данным в некотором блоке кода? Можно использовать серийную очередь. Она будет выполнять код последовательно.
+
+```swift
+final class CacheServiceImpl: CacheService {
+    private let syncQueue = DispatchQueue(label: "CacheService")
+    private let fileCache: FileCache
+
+    init(fileCache: FileCache) {
+        self.fileCache = fileCache
+    }
+
+    func save(_ items: [TodoItem], completion: @escaping EmptyCompletion) {
+        syncQueue.async { [weak self] in
+            self?.saveImpl(items, completion: completion)
+        }
+    }
+
+    func load(completion: @escaping TodoItemsCompletion) {
+        syncQueue.async { [weak self] in
+            self?.loadImpl(completion: completion)
+        }
+    }
+
+    private func saveImpl(_ items: [TodoItem], completion: @escaping EmptyCompletion) {
+        assert(!Thread.isMainThread)
+        do {
+            try fileCache.save(items, to: kFileName)
+            completion(.success(()))
+        } catch {
+            completion(.failure(TodoServiceErrors.fileSaveFailed(cause: error)))
+        }
+    }
+
+    private func loadImpl(completion: @escaping TodoItemsCompletion) {
+        assert(!Thread.isMainThread)
+        do {
+            let items: [TodoItem] = try fileCache.load(from: kFileName)
+            completion(.success(items))
+        } catch {
+            completion(.failure(TodoServiceErrors.fileLoadFailed(cause: error)))
+        }
+    }
+}
+```
+
 ## Барьерные операции
 
 Барьерные операции ставят барьер между операциями, поступившими "до" и "после". Таким образом, операции записи/изменения данных производятся последовательно (в отличие от операций чтения).
@@ -91,4 +138,8 @@ itemsQueue.async(flags: [.barrier]) { [weak self] in
   completion()
 }
 ```
+
+---
+
+`DispatchWorkItem` позволяет отменять выполнение задач при использовании GCD.
 
